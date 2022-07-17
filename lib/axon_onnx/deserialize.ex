@@ -1675,6 +1675,22 @@ defmodule AxonOnnx.Deserialize do
     {updated_axon, params, used_params}
   end
 
+  defp recur_nodes(
+    %Node{
+      op_type: "ConvTranspose",
+      input: inputs,
+      attribute: attrs,
+      output: output
+    }, {_axon, params, _used_params}) do
+    # op spec: https://github.com/onnx/onnx/blob/main/docs/Operators.md#convtranspose
+
+    IO.inspect(inputs, label: "inputs")
+    IO.inspect(output, label: "output")
+    IO.inspect(options!(attrs), label: "attrs")
+
+    raise ArgumentError, "unsupported ConvTranspose"
+  end
+
   defp recur_nodes(%Node{op_type: unsupported}, _) do
     raise ArgumentError, "unsupported #{inspect(unsupported)}"
   end
