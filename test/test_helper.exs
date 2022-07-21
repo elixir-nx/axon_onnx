@@ -269,6 +269,7 @@ Logger.info("Generating ONNX test cases...")
 
 if not File.exists?(cases_path) do
   # Generate cases
+  # requires onnx python package: pip3 install onnx
   System.cmd("backend-test-tools", ["generate-data"])
 
   # Get cases path
