@@ -683,29 +683,30 @@ defmodule DeserializeTest do
     # check_onnx_test_case!("node", "test_reshape_zero_dim")
     # end
 
-    # test "Resize" do
-    #   check_onnx_test_case!("node", "test_resize_downsample_scales_cubic")
-    #   check_onnx_test_case!("node", "test_resize_downsample_scales_cubic_A_n0p5_exclude_outside")
-    #   check_onnx_test_case!("node", "test_resize_downsample_scales_cubic_align_corners")
-    #   check_onnx_test_case!("node", "test_resize_downsample_scales_linear")
-    #   check_onnx_test_case!("node", "test_resize_downsample_scales_linear_align_corners")
-    #   check_onnx_test_case!("node", "test_resize_downsample_scales_nearest")
-    #   check_onnx_test_case!("node", "test_resize_downsample_sizes_cubic")
-    #   check_onnx_test_case!("node", "test_resize_downsample_sizes_linear_pytorch_half_pixel")
-    #   check_onnx_test_case!("node", "test_resize_downsample_sizes_nearest")
-    #   check_onnx_test_case!("node", "test_resize_downsample_sizes_nearest_tf_half_pixel_for_nn")
-    #   check_onnx_test_case!("node", "test_resize_tf_crop_and_resize")
-    #   check_onnx_test_case!("node", "test_resize_upsample_scales_cubic")
-    #   check_onnx_test_case!("node", "test_resize_upsample_scales_cubic_A_n0p5_exclude_outside")
-    #   check_onnx_test_case!("node", "test_resize_upsample_scales_cubic_align_corners")
-    #   check_onnx_test_case!("node", "test_resize_upsample_scales_cubic_asymmetric")
-    #   check_onnx_test_case!("node", "test_resize_upsample_scales_linear")
-    #   check_onnx_test_case!("node", "test_resize_upsample_scales_linear_align_corners")
-    #   check_onnx_test_case!("node", "test_resize_upsample_scales_nearest")
-    #   check_onnx_test_case!("node", "test_resize_upsample_scales_nearest_ceil_half_pixel")
-    #   check_onnx_test_case!("node", "test_resize_upsample_scales_nearest_floor_align_corners")
-    #   check_onnx_test_case!("node", "test_resize_upsample_scales_nearest_round_prefer_ceil_asymmetric")
-    # end
+    @tag :resize
+    test "Resize" do
+      check_onnx_test_case!("node", "test_resize_downsample_scales_cubic")
+      # check_onnx_test_case!("node", "test_resize_downsample_scales_cubic_A_n0p5_exclude_outside")
+      # check_onnx_test_case!("node", "test_resize_downsample_scales_cubic_align_corners")
+      # check_onnx_test_case!("node", "test_resize_downsample_scales_linear")
+      # check_onnx_test_case!("node", "test_resize_downsample_scales_linear_align_corners")
+      # check_onnx_test_case!("node", "test_resize_downsample_scales_nearest")
+      # check_onnx_test_case!("node", "test_resize_downsample_sizes_cubic")
+      # check_onnx_test_case!("node", "test_resize_downsample_sizes_linear_pytorch_half_pixel")
+      # check_onnx_test_case!("node", "test_resize_downsample_sizes_nearest")
+      # check_onnx_test_case!("node", "test_resize_downsample_sizes_nearest_tf_half_pixel_for_nn")
+      # check_onnx_test_case!("node", "test_resize_tf_crop_and_resize")
+      # check_onnx_test_case!("node", "test_resize_upsample_scales_cubic")
+      # check_onnx_test_case!("node", "test_resize_upsample_scales_cubic_A_n0p5_exclude_outside")
+      # check_onnx_test_case!("node", "test_resize_upsample_scales_cubic_align_corners")
+      # check_onnx_test_case!("node", "test_resize_upsample_scales_cubic_asymmetric")
+      # check_onnx_test_case!("node", "test_resize_upsample_scales_linear")
+      # check_onnx_test_case!("node", "test_resize_upsample_scales_linear_align_corners")
+      # check_onnx_test_case!("node", "test_resize_upsample_scales_nearest")
+      # check_onnx_test_case!("node", "test_resize_upsample_scales_nearest_ceil_half_pixel")
+      # check_onnx_test_case!("node", "test_resize_upsample_scales_nearest_floor_align_corners")
+      # check_onnx_test_case!("node", "test_resize_upsample_scales_nearest_round_prefer_ceil_asymmetric")
+    end
 
     # test "Round" do
     #   check_onnx_test_case!("node", "test_round")

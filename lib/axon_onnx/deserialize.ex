@@ -2017,6 +2017,92 @@ defmodule AxonOnnx.Deserialize do
 
   defp recur_nodes(
          %Node{
+           op_type: "Resize",
+           input: input,
+           attribute: attrs,
+           output: output
+         },
+         {axon, params, used_params}
+       ) do
+    # op_type spec: https://github.com/onnx/onnx/blob/main/docs/Operators.md#resize
+
+    [in_layer_name | rest_of_inputs] = input
+    inp = input!(in_layer_name, axon, params, used_params)
+
+    layer_inputs =
+      inp
+      |> Axon.get_inputs()
+      |> Map.new(fn {k, v} -> {k, Nx.broadcast(0.0, v)} end)
+    input_shape = Axon.get_output_shape(inp, layer_inputs)
+
+
+    [_roi, scales, sizes] =
+      case rest_of_inputs do
+        # all are optional
+        # only one of 'scales' and 'sizes' can be specified
+        ["", scales] ->
+          scales = constant!(scales, axon, params, used_params) |> Nx.to_flat_list()
+          [nil, scales, nil]
+
+        ["", _, sizes] ->
+          sizes = constant!(sizes, axon, params, used_params) |> Nx.to_flat_list()
+          [nil, nil, sizes]
+
+        [_roi, _sc] ->
+          raise ArgumentError, "unsupported resize, roi is not implemented yet"
+        [_roi, _sc, _si] ->
+          raise ArgumentError, "unsupported resize, roi is not implemented yet"
+      end
+
+    output_shape =
+      case [scales, sizes] do
+        [nil, nil] ->
+          raise ArgumentError, "Invalid Resize, one of 'scales' and 'sizes' MUST be specified"
+
+        [scales, nil] ->
+          input_shape
+          |> Tuple.to_list()
+          |> Enum.zip_with(scales, fn
+            nil, _  -> nil
+            is, sc -> trunc(is * sc)
+          end)
+
+        [nil, sizes] ->
+          sizes
+
+      end
+
+    %{"mode" => mode} = options!(attrs)
+
+    method =
+      case mode do
+        "nearest" ->
+          :nearest
+
+        "linear" ->
+          :linear
+
+        "bilinear" ->
+          :bilinear
+
+        "cubic" ->
+          :cubic
+
+        mode ->
+          raise ArgumentError,
+                "unsupported resize mode #{inspect(mode)}, Axon only supports" <>
+                  "nearest, linear, bilinear and cubic resizing"
+      end
+    spatial_dims = {elem(output_shape, 3), elem(output_shape, 4)}
+    layer = Axon.resize(inp, spatial_dims, method: method)
+
+    [out_layer_name] = output
+    updated_axon = Map.put(axon, out_layer_name, layer)
+    {updated_axon, params, used_params}
+  end
+
+  defp recur_nodes(
+         %Node{
            op_type: "Dropout",
            input: [inp_name],
            attribute: attrs,
